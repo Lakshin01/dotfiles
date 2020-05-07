@@ -1,0 +1,2 @@
+#!/bin/bash
+ln -s $PWD/bashconfig $HOME/.bash_aliases
