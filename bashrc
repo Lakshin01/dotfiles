@@ -134,3 +134,8 @@ mkcd () {
 	mkdir -p -- "$1"&&
 		cd -P -- "$1"
 }
+mkcdr () {
+	mkdir -p -- "$1"&&
+		cd -P -- "$1" && touch README.md && vi README.md
+}
+
