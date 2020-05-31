@@ -1,4 +1,5 @@
 ######################     Lakshin's Bashrc   ###################################
+## Sets vi bindings for bash
 set -o vi
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
@@ -67,12 +68,12 @@ unset color_prompt force_color_prompt
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1" ;;
 *)
     ;;
 esac
 
+#PS1=
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -116,6 +117,9 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+## Specific Runtime scripts
+
+
 
 ## Aliases
 
@@ -127,7 +131,17 @@ alias bashrc="vi ~/.bashrc"
 alias vimrc="vi ~/.vimrc"
 alias mupdf="mupdf -I"
 alias ssh="TERM=xterm-256color ssh" # Alacritty TERM Variable fix for overthewire.org
+alias gh="cd ~/repos/github.com/Lakshin01/ && ls"
+alias gl="cd ~/repos/gitlab.com/lakshin/ && ls"
+alias gl_="cd ~/repos/gitlab.com/_lakshin/ && ls"
+alias pushhub="git remote add origin git@github.com:Lakshin01/${1}.git"
+alias ?="duck"
+alias ??="google"
+alias hack="cmatrix"
+alias code="codium"
+alias rm="mv ${1} ~/.trash/"
 
+## Bash Functions
 mkcd () {
 	mkdir -p -- "$1"&&
 		cd -P -- "$1"
@@ -136,9 +150,36 @@ mkcdr () {
 	mkdir -p -- "$1"&&
 		cd -P -- "$1" && touch README.md && vi README.md
 }
-
-
-
-
-# Exports
+vic () {
+	vi $(which $1)
+}
+rgb () {
+  declare r
+  declare g
+  declare b
+  case ${#1} in
+    6) r=$"0x${1:0:2}"; g=$"0x${1:2:2}"; b=$"0x${1:4:2}";;
+    3) rgb "${1:0:1}${1:0:1}${1:1:1}${1:1:1}${1:2:1}${1:2:1}"
+        return;;
+    1) rgb "$1$1$1"; return;;
+    *) return 1;;
+  esac
+temp=`printf "%i;%i;%i\n" $r $g $b`
+#printf "%i;%i;%i\n" $r $g $b
+echo "\033[38;2;${temp}m;" | xclip
+}
+## Exports
 export PDFDIR=$HOME/repos/pdfs
+export PATH=$PATH:~/.runtimescripts
+export DENO_INSTALL="/home/lakshin/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
+export PATH=$PATH:/usr/local/go/bin
+export red=ff0000
+export blue="0000ff"
+export green="00ff00"
+export cyan="00ffff"
+export black="ffffff"
+export white="000000"
+export yellow="ffff00"
+export pink="ff69b4"
+export orange="ffa500"
