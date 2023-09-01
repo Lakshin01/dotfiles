@@ -1,8 +1,0 @@
-rm -rf ~/repos/github.com/Lakshin01/scheduling-algorithms/DAG-scheduling/build/
-
-mkdir   ~/repos/github.com/Lakshin01/scheduling-algorithms/DAG-scheduling/build/ && cd  ~/repos/github.com/Lakshin01/scheduling-algorithms/DAG-scheduling/build/
-
-
-cmake ..
-
-#make
