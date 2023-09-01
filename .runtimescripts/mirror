@@ -1,0 +1,55 @@
+#!/bin/sh
+# Lakshin's gitlab and github mirror script
+username=_lakshin
+
+
+read -p "Enter commit message " msg
+
+if [ -d ~/.ssh ];then
+echo ".ssh exists"
+else
+	echo ".ssh dir doesn't exist,exiting ...";exit 1; 
+fi
+
+flag=`which hub`
+
+if [ -z "$flag" ];then
+    echo "Refer https://github.com/github/hub for installation of hub, it is used to create Github Repositories from terminal"
+    exit 1;
+fi
+
+if [ -d ./.git ];then
+
+    
+git remote remove origin
+
+git remote add origin git@gitlab.com:${username}/${PWD##*/}.git
+
+git add .
+
+git commit -m "msg"
+
+git status
+
+git push -u origin master
+
+
+else    
+    
+	git init
+	git add .
+	git commit -m "$msg"
+	git remote add origin git@gitlab.com:${username}/${PWD##*/}.git
+	git push -u origin master 
+
+fi
+
+echo " Successfully pushed to gitlab"
+
+# Now Over to Github using hub tool.
+
+git remote remove origin
+
+hub create
+
+git push -u origin master

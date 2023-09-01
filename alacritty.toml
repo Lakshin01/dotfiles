@@ -24,10 +24,10 @@ y = 12
 [scrolling]
 history = 12000
 
-#[font]
+[font]
 #builtin_box_drawing = false
 #size                = 8.5
-
+family = "JetBrains Mono"
 
 
 [font.offset]
