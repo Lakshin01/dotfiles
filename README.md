@@ -1,8 +1,5 @@
 # Lakshin's Configuration files.
 
+This repository has basic information for a new system.
 
-To be updated with Bashrc, runtimescipts, aliases.
-
-Tmux.conf
-
-other configs also.
+Has extra stuff like tools, I'd like to use or fixes for discord update bug and legacy bashrc files for nostalgia.

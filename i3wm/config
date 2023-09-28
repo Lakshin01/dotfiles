@@ -14,15 +14,20 @@
 # EndeavourOS wiki holds some Information also: https://discovery.endeavouros.com/window-tiling-managers/i3-wm/
 # Please see http://i3wm.org/docs/userguide.html for the official i3 reference!
 
+
+## Disable all title bars
+default_border none
+
+
+
 #######################
-# config starts here: #
-#######################
+# config starts here: # #######################
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango: Noto Sans Regular 14
+font pango: Noto Sans Regular 12
 
 # set the mod key to the winkey:
 set $mod Mod4
@@ -32,7 +37,12 @@ set $mod Mod4
 #####################
 
 # default i3 tiling mode:
+
+
 workspace_layout default
+
+
+
 
 # i3 stacking layout:
 # Each window will be fullscreen and tabbed top to bottom.
@@ -47,14 +57,14 @@ workspace_layout default
 ##############################
 
 #border indicator on windows:
-new_window pixel 1
+new_window pixel 0
 
 # thin borders
 # hide_edge_borders both
 
 # Set inner/outer gaps
-gaps inner 6
-gaps outer 3
+gaps inner 3
+gaps outer 6
 
 # show window title bars (not officially supported with i3gaps)
 #default_border normal
@@ -207,8 +217,8 @@ bindsym XF86MonBrightnessDown exec --no-startup-id ~/.config/i3/scripts/volume_b
 # change focus
 bindsym $mod+j focus left
 bindsym $mod+k focus down
-bindsym $mod+b focus up
-bindsym $mod+o focus right
+#bindsym $mod+b focus up
+#bindsym $mod+o focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -301,14 +311,15 @@ bindsym $mod+Shift+p exec ~/.config/i3/scripts/power-profiles
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:"
 set $ws2 "2:"
-set $ws3 "3:"
-set $ws4 "4:"
-set $ws5 "5:"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
+
 
 # use workspaces on different displays:
 # where you have to replace VGA-0/HDMI-0 with the names for your displays
@@ -320,18 +331,24 @@ set $ws10 "10"
 #workspace $ws5 output HDMI-0
 
 # bind program to workspace and focus to them on startup:
-assign [class="Xfce4-terminal"] $ws1
+assign [class="Alacritty"] $ws1
 assign [class="(?i)firefox"] $ws2
-assign [class="Thunar"] $ws3
-assign [class="thunderbird"] $ws4
-assign [class="TelegramDesktop"] $ws5
+assign [class="(?i)Visual Studio Code"] $ws3
+assign [class="Thunar"] $ws4
+assign [class="Emacs"] $ws5
+assign [class="(?i)Obsidian"] $ws8
+assign [class="Google Chrome"] $ws9
+assign [class="(?i)Okular"] $ws10
+
+
 
 # automatic set focus new window if it opens on another workspace than the current:
-for_window [class=Xfce4-terminal] focus
+
+for_window [class=Emacs] focus
 for_window [class=(?i)firefox] focus
-for_window [class=Thunar] focus
-for_window [class=Thunderbird] focus
-for_window [class=TelegramDesktop] focus
+for_window [class=Alacritty] focus
+
+
 
 ##############
 # compositor #
@@ -357,10 +374,11 @@ for_window [class=TelegramDesktop] focus
 # For modifications, it can be copied to ~/.config/picom/picom.conf or ~/.config/picom.conf
 # install picom package (yay -S picom)
 # start using default config 
-#exec_always --no-startup-id picom -b
+exec_always --no-startup-id picom -b --backend glx
 #
 # for custom config:
-#exec_always --no-startup-id picom --config  ~/.config/picom.conf
+
+#exec_always --no-startup-id picom --config  ~/.config/picom/picom.conf -b --backend glx
 
 #############################################
 # autostart applications/services on login: #
@@ -394,8 +412,9 @@ exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id ~/.screenlayout/monitor.sh
 
 # set wallpaper
-# exec --no-startup-id sleep 2 && nitrogen --restore
-exec --no-startup-id sleep 1 && feh --bg-fill /usr/share/endeavouros/backgrounds/endeavouros-wallpaper.png
+exec --no-startup-id sleep 2 && nitrogen --restore
+#exec --no-startup-id sleep 1 && feh --bg-fill /home/laksh/Downloads/ai.jpg
+
 
 # set powersavings for display:
 exec --no-startup-id xset s 480 dpms 600 600 600
@@ -422,22 +441,32 @@ exec --no-startup-id /usr/bin/dunst
 # alternative if you installed aside with XFCE4:
 # exec --no-startup-id /usr/lib/xfce4/notifyd/xfce4-notifyd &
 
+
+
 # autotiling script
 # https://github.com/nwg-piotr/autotiling
 # `yay -S autotiling ;) (it is in AUR)
 #exec_always --no-startup-id autotiling
 
 # Autostart apps as you like
-#exec --no-startup-id sleep 2 && xfce4-terminal
-exec --no-startup-id sleep 7 && firefox https://github.com/endeavouros-team/endeavouros-i3wm-setup/blob/main/force-knowledge.md
-#exec --no-startup-id sleep 3 && thunar
+exec --no-startup-id sleep 1 && alacritty
+exec --no-startup-id sleep 2 && firefox
+
+#exec --no-startup-id sleep 2 && emacsclient -c -a 'emacs'
+#exec --no-startup-id sleep 2 && thunar
+
+
+#exec --no-startup-id sleep 3 && google-chrome-stable
+#exec --no-startup-id sleep 3 && obsidian
+#exec --no-startup-id sleep 3 && QT_SCALE_FACTOR=1.5 okular
 
 ###############
 # system tray #
 ###############
 # if you do not use dex: exec --no-startup-id dex --autostart --environment i3
 # you need to have tray apps started manually one by one:
-
+## EMACS DAEMON START auto
+exec --no-startup-id emacs --daemon && emacs
 # start blueberry app for managing bluetooth devices from tray:
 #exec --no-startup-id blueberry-tray
 
@@ -505,33 +534,50 @@ client.urgent		    	$urgentred	$urgentred	$white		$yellowbrown	$yellowbrown
 
 # Start i3bar to display a workspace bar
 # (plus the system information i3status finds out, if available)
+# Define colors for easy reference
+set $darkgrey  #1a1a1a
+set $mediumgrey  #4c4c4c
+set $grey  #b2b2b2
+set $lightblue  #99ccff
+set $purple  #7e5bc5
+set $white  #ffffff
+set $urgentred  #ff0000
+
+# Bar configuration
 bar {
-		font pango: Noto Sans Regular 10
-		status_command i3blocks -c ~/.config/i3/i3blocks.conf
-	    	position bottom
-#	    	i3bar_command i3bar --transparency
-# it could be that you have no primary display set: set one (xrandr --output <output> --primary)
-# reference: https://i3wm.org/docs/userguide.html#_tray_output
-		    #tray_output primary
-		    tray_padding 0
+    # Font settings
+    font pango: Noto Sans Regular 10
 
-# When strip_workspace_numbers is set to yes,
-# any workspace that has a name of the form
-# “[n][:][NAME]” will display only the name.
-strip_workspace_numbers yes
-##strip_workspace_name no
+    # Status command (use your i3blocks config)
+    status_command i3blocks -c ~/.config/i3/i3blocks.conf
 
-		    colors {
-		    separator          $purple
-		    background         $darkgrey
-		    statusline         $white
-#                          		border 		        bg		txt		indicator
-		focused_workspace	$mediumgrey	   	$grey		$darkgrey	$purple
-		active_workspace	$lightblue      	$mediumgrey	$darkgrey	$purple
-		inactive_workspace	$darkgrey   		$darkgrey	$grey		$purple
-		urgent_workspace	$urgentred	    	$urgentred	$white		$purple
-	}
+    # Positioning
+    position bottom
+
+    # Enable transparency (if supported)
+    i3bar_command i3bar --transparency
+
+    # Tray settings
+    # tray_output primary  # Uncomment if you want to display the tray on primary monitor
+    tray_padding 0
+
+    # Workspace settings
+    strip_workspace_numbers yes
+
+    # Colors
+    colors {
+        separator $purple
+        background $darkgrey
+        statusline $white
+
+        # focused, active, inactive, and urgent workspaces
+        focused_workspace  $mediumgrey $grey $darkgrey $purple
+        active_workspace   $lightblue $mediumgrey $darkgrey $purple
+        inactive_workspace $darkgrey $darkgrey $grey $purple
+        urgent_workspace   $urgentred $urgentred $white $purple
+    }
 }
+
 
 # you can add different bars for multidisplay setups on each display:
 # set output HDMI-0 to the display you want the bar, --transparency can be set.
@@ -589,3 +635,4 @@ bindsym $mod+t exec rofi -show window \
 #exec --no-startup-id greenclip daemon>/dev/null
 #bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard \
 #		-config ~/.config/rofi/rofidmenu.rasi
+bindsym $mod+o exec --no-startup-id QT_SCALE_FACTOR=1.5 okular

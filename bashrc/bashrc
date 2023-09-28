@@ -1,0 +1,165 @@
+#
+# ~/.bashrc
+#
+set -o vi
+# If not running interactively, don't do anything
+
+color_prompt=yes
+alias cat="bat"
+
+[[ $- != *i* ]] && return
+
+[[ -f ~/.welcome_screen ]] && . ~/.welcome_screen
+
+
+# Set custom prompt if present
+if [[ $color_prompt == 'yes' ]]; then
+	# shellcheck source=/dev/null
+	. "$HOME/.myprompt.bash"
+	PROMPT_COMMAND=('set_prompt' "${PROMPT_COMMAND[@]}")
+else
+	PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt
+
+
+
+_set_liveuser_PS1() {
+    #PS1='\u@\h: \W \$ '
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    if [ "$(whoami)" = "liveuser" ] ; then
+        local iso_version="$(grep ^VERSION= /usr/lib/endeavouros-release 2>/dev/null | cut -d '=' -f 2)"
+        if [ -n "$iso_version" ] ; then
+            local prefix="eos-"
+            local iso_info="$prefix$iso_version"
+            PS1="[\u@$iso_info \W]\$ "
+        fi
+    fi
+}
+_set_liveuser_PS1
+unset -f _set_liveuser_PS1
+
+ShowInstallerIsoInfo() {
+    local file=/usr/lib/endeavouros-release
+    if [ -r $file ] ; then
+        cat $file
+    else
+        echo "Sorry, installer ISO info is not available." >&2
+    fi
+}
+
+
+alias ls='ls --color=auto'
+alias ll='ls -lav --ignore=..'   # show long listing of all except ".."
+alias l='ls -lav --ignore=.?*'   # show long listing but no hidden dotfiles except "."
+
+[[ "$(whoami)" = "root" ]] && return
+
+[[ -z "$FUNCNEST" ]] && export FUNCNEST=100          # limits recursive functions, see 'man bash'
+
+## Use the up and down arrow keys for finding a command in history
+## (you can write some initial letters of the command first).
+bind '"\e[A":history-search-backward'
+bind '"\e[B":history-search-forward'
+
+################################################################################
+## Some generally useful functions.
+## Consider uncommenting aliases below to start using these functions.
+##
+## October 2021: removed many obsolete functions. If you still need them, please look at
+## https://github.com/EndeavourOS-archive/EndeavourOS-archiso/raw/master/airootfs/etc/skel/.bashrc
+
+_open_files_for_editing() {
+    # Open any given document file(s) for editing (or just viewing).
+    # Note1:
+    #    - Do not use for executable files!
+    # Note2:
+    #    - Uses 'mime' bindings, so you may need to use
+    #      e.g. a file manager to make proper file bindings.
+
+    if [ -x /usr/bin/exo-open ] ; then
+        echo "exo-open $@" >&2
+        setsid exo-open "$@" >& /dev/null
+        return
+    fi
+    if [ -x /usr/bin/xdg-open ] ; then
+        for file in "$@" ; do
+            echo "xdg-open $file" >&2
+            setsid xdg-open "$file" >& /dev/null
+        done
+        return
+    fi
+
+    echo "$FUNCNAME: package 'xdg-utils' or 'exo' is required." >&2
+}
+
+#------------------------------------------------------------
+
+## Aliases for the functions above.
+## Uncomment an alias if you want to use it.
+##
+
+# alias ef='_open_files_for_editing'     # 'ef' opens given file(s) for editing
+# alias pacdiff=eos-pacdiff
+################################################################################
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+   . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+if [ -d /mnt/c/Users/laksh/Desktop/wsl ]; then
+cd /mnt/c/Users/laksh/Desktop/wsl
+fi
+
+export XDG_CONFIG_HOME="/home/laksh/.config"
+## Aliases
+
+alias c="clear"
+alias x="exit"
+alias steal="git clone"
+alias vi="vim"
+alias bashrc="vi ~/.bashrc"
+alias vimrc="vi ~/.vimrc"
+alias mupdf="mupdf -I"
+alias ssh="TERM=xterm-256color ssh" # Alacritty TERM Variable fix for overthewire.org
+alias gh="cd ~/repos/github.com/Lakshin01/ && ls"
+alias gl="cd ~/repos/gitlab.com/lakshin/ && ls"
+alias gl_="cd ~/repos/gitlab.com/_lakshin/ && ls"
+alias pushhub="git remote add origin git@github.com:Lakshin01/${1}.git"
+alias prac="cd ~/repos/github.com/Lakshin01/practice/ && ls"
+mkcd () {
+	mkdir -p -- "$1"&&
+		cd -P -- "$1"
+}
+mkcdr () {
+	mkdir -p -- "$1"&&
+		cd -P -- "$1" && touch README.md && vi README.md
+}
+. "$HOME/.cargo/env"
+source /home/laksh/apps/alacritty/extra/completions/alacritty.bash
+alias xclip="xclip -selection clipboard"
+
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)
+alias code="code-insiders"
+export PATH="/home/laksh/.local/bin:$PATH:/home/laksh/.runtimescripts"
+export AIRFLOW_HOME="~/airflow"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/opencv/libs:/path/to/vtk/libs
+
+
+export PATH=$BUN_INSTALL/bin:$PATH
+export PATH="$HOME/.config/emacs/bin/:$PATH"
+export emacs="emacsclient -c -a 'emacs'"
+export QT_SCALE_FACTOR=1.5 okular
+alias get_idf='. $HOME/esp/esp-idf/export.sh'
