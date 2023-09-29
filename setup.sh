@@ -30,3 +30,21 @@ if ! grep -q "runtimescripts" ~/.bashrc; then
   echo 'export PATH=$PATH:~/.runtimescripts' >> ~/.bashrc
 fi
 
+# Adding Keybinds to the system and invoking them.
+# Make Keybinds directory and backup existing custom_keymap.xkb
+mkdir -p ~/keybinds
+[ -f ~/keybinds/custom_keymap.xkb ] && mv ~/keybinds/custom_keymap.xkb ~/keybinds/custom_keymap.xkb.bak
+
+# Symlink for custom_keymap.xkb
+ln -sf "$(pwd)/keybinds/custom_keymap.xkb" ~/keybinds/custom_keymap.xkb
+
+# Apply the keymap
+xkbcomp ~/keybinds/custom_keymap.xkb $DISPLAY
+
+# Add command to i3 config to make the keymap persistent across reboots
+if ! grep -q "xkbcomp ~/keybinds/custom_keymap.xkb \$DISPLAY" ~/.config/i3/config; then
+  echo 'exec --no-startup-id "xkbcomp ~/keybinds/custom_keymap.xkb $DISPLAY"' >> ~/.config/i3/config
+fi
+
+# Print message
+echo "CapsLock has been successfully binded to Backspace."
