@@ -1,0 +1,17 @@
+    interpret Caps_Lock+AnyOfOrNone(all) {
+        action= LockMods(modifiers=Lock);
+    };
+
+line 1129
+
+    indicator "Caps Lock" {
+        !allowExplicit;
+        whichModState= locked;
+        modifiers= Lock;
+    };
+
+line 1140
+
+    indicator 1 = "Caps Lock";
+
+    line 251
