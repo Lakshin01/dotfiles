@@ -6,9 +6,9 @@ mkdir -p ~/.config/alacritty
 ln -sf "$(pwd)/alacritty/alacritty.toml" ~/.config/alacritty/alacritty.toml
 
 # Backup and create symlink for i3wm
-mkdir -p ~/.config/i3
-[ -f ~/.config/i3/config ] && mv ~/.config/i3/config ~/.config/i3/config.bak
-ln -sf "$(pwd)/i3wm/config" ~/.config/i3/config
+#mkdir -p ~/.config/i3
+#[ -f ~/.config/i3/config ] && mv ~/.config/i3/config ~/.config/i3/config.bak
+#ln -sf "$(pwd)/i3wm/config" ~/.config/i3/config
 
 # Backup and create symlink for Vim
 [ -f ~/.vimrc ] && mv ~/.vimrc ~/.vimrc.bak
@@ -42,9 +42,9 @@ ln -sf "$(pwd)/keybinds/custom_keymap.xkb" ~/keybinds/custom_keymap.xkb
 xkbcomp ~/keybinds/custom_keymap.xkb $DISPLAY
 
 # Add command to i3 config to make the keymap persistent across reboots
-if ! grep -q "xkbcomp ~/keybinds/custom_keymap.xkb \$DISPLAY" ~/.config/i3/config; then
-  echo 'exec --no-startup-id "xkbcomp ~/keybinds/custom_keymap.xkb $DISPLAY"' >> ~/.config/i3/config
-fi
+#if ! grep -q "xkbcomp ~/keybinds/custom_keymap.xkb \$DISPLAY" ~/.config/i3/config; then
+#  echo 'exec --no-startup-id "xkbcomp ~/keybinds/custom_keymap.xkb $DISPLAY"' >> ~/.config/i3/config
+#fi
 
 # Print message
 echo "CapsLock has been successfully binded to Backspace."

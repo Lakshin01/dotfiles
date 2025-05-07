@@ -1,6 +1,6 @@
 # alacritty.toml
 
-live_config_reload = true
+#live_config_reload = true
 
 [env]
 TERM = "alacritty"
@@ -26,8 +26,8 @@ history = 12000
 
 [font]
 #builtin_box_drawing = false
-#size                = 8.5
-family = "JetBrains Mono"
+size                = 13.5
+#family = "JetBrains Mono"
 
 
 [font.offset]
