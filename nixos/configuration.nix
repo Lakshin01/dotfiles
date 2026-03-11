@@ -212,6 +212,7 @@
     top = "btop";
     lg = "lazygit";
     ld = "lazydocker";
+    nrs = "cd ~/repos/github.com/Lakshin01/dotfiles/nixos && sudo nixos-rebuild switch --flake .#nixos";
   };
 
   system.stateVersion = "25.11";
